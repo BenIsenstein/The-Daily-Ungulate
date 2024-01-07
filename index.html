@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/preset-icons.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/preset-uno.global.js"></script>
+    <script>
+      window.__unocss = {
+        presets: [
+          () => window.__unocss_runtime.presets.presetIcons({ cdn: 'https://esm.sh/' }),
+          () => window.__unocss_runtime.presets.presetUno(),
+        ],
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/core.global.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <script>
+      const onLoad = () => {
+        const container = document.getElementById('homies-container')
+        const homies = Array.from(document.querySelectorAll('[data-role="homie"]'))
+        const inMotion = []
+        const GAP_PX = 16
+        const STEP_SIZE_PX = 1
+        const translateRe = /translate\(-?([0-9]*)px\)/
+
+        for (const el of homies) {
+          el.style.transform = 'translate(0px)'
+        }
+
+        const animateTheHomies = () => {
+          const containerRect = container.getBoundingClientRect()
+          const lastInMotion = inMotion[inMotion.length - 1]
+          const lastInMotionRect = lastInMotion?.getBoundingClientRect()
+          const firstInMotion = inMotion[0]
+          const firstInMotionRect = firstInMotion?.getBoundingClientRect()
+          const containerRightBound = containerRect.x + containerRect.width
+          const lastInMotionRightBound = lastInMotionRect && lastInMotionRect.x + lastInMotionRect.width
+
+          if (!lastInMotion || (containerRightBound - lastInMotionRightBound) >= GAP_PX) {
+            const nextInMotion = homies.shift()
+            if (nextInMotion)
+              inMotion.push(nextInMotion)
+          }
+
+          if (firstInMotion && (firstInMotionRect.x + firstInMotionRect.width) < containerRect.x) {
+            const nextHomie = inMotion.shift()
+            if (nextHomie)
+              homies.push(nextHomie)
+          }
+
+          for (const el of homies) {
+            el.style.transform = 'translate(0px)'
+          }
+
+          for (const el of inMotion) {
+            const newTranslate = +translateRe.exec(el.style.transform)[1] + STEP_SIZE_PX
+            el.style.transform = `translate(-${newTranslate}px)`
+          }
+
+          requestAnimationFrame(animateTheHomies)
+        }
+
+        animateTheHomies()
+      }
+
+      window.addEventListener('load', onLoad)
+    </script>
+    <title>The Daily Ungulate</title>
+  </head>
+  <body class="font-sans">
+    <div class="w-screen h-max min-h-screen box-border p-8 flex flex-col items-center gap-6 bg-gradient-to-r from-green-100 to-green-500">
+        <h1 class="font-extrabold text-5xl">
+            The Daily Ungulate
+        </h1>
+        <h2 class="italic text-xl">
+          Your daily fix of Herbivorous Hooved Homies
+        </h2>
+        <div class="relative h-40 w-screen max-w-[640px] overflow-hidden" id="homies-container">
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-twemoji-hippopotamus text-9xl z-10"></span>
+          </span>
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-fluent-emoji-flat:horse text-9xl z-10"></span>
+          </span>
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-fluent-emoji-flat:rhinoceros text-9xl z-10"></span>
+          </span>
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-fluent-emoji-flat:deer text-9xl z-10"></span>
+          </span>
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-fluent-emoji-flat:cow text-9xl z-10"></span>
+          </span>
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-fluent-emoji-flat:pig text-9xl z-10"></span>
+          </span>
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-fluent-emoji-flat:zebra text-9xl z-10"></span>
+          </span>
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-fluent-emoji-flat:water-buffalo text-9xl z-10"></span>
+          </span>
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-twemoji:giraffe text-9xl z-10"></span>
+          </span>
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-fluent-emoji-flat:goat text-9xl z-10"></span>
+          </span>
+          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
+            <span class="i-fxemoji:sheep text-9xl z-10"></span>
+          </span>
+        </div>
+    </div>
+  </body>
+</html>
