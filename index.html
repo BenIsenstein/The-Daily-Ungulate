@@ -19,7 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/core.global.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <script>
-      const onLoad = () => {
+      window.addEventListener('load', () => {
         const container = document.getElementById('homies-container')
         const homies = Array.from(document.querySelectorAll('[data-role="homie"]'))
         const inMotion = []
@@ -27,9 +27,7 @@
         const STEP_SIZE_PX = 1
         const translateRe = /translate\(-?([0-9]*)px\)/
 
-        for (const el of homies) {
-          el.style.transform = 'translate(0px)'
-        }
+        for (const el of homies) el.style.transform = 'translate(0px)'
 
         const animateTheHomies = () => {
           const containerRect = container.getBoundingClientRect()
@@ -41,19 +39,14 @@
           const lastInMotionRightBound = lastInMotionRect && lastInMotionRect.x + lastInMotionRect.width
 
           if (!lastInMotion || (containerRightBound - lastInMotionRightBound) >= GAP_PX) {
-            const nextInMotion = homies.shift()
-            if (nextInMotion)
-              inMotion.push(nextInMotion)
+            if (homies.length) inMotion.push(homies.shift())
           }
 
           if (firstInMotion && (firstInMotionRect.x + firstInMotionRect.width) < containerRect.x) {
-            const nextHomie = inMotion.shift()
-            if (nextHomie)
-              homies.push(nextHomie)
-          }
-
-          for (const el of homies) {
-            el.style.transform = 'translate(0px)'
+            if (inMotion.length) {
+              inMotion[0].style.transform = 'translate(0px)'
+              homies.push(inMotion.shift())
+            }
           }
 
           for (const el of inMotion) {
@@ -65,55 +58,28 @@
         }
 
         animateTheHomies()
-      }
-
-      window.addEventListener('load', onLoad)
+      })
     </script>
     <title>The Daily Ungulate</title>
   </head>
   <body class="font-sans">
     <div class="w-screen h-max min-h-screen box-border p-8 flex flex-col items-center gap-6 bg-gradient-to-r from-green-100 to-green-500" un-cloak>
-        <h1 class="font-extrabold text-5xl">
-            The Daily Ungulate
-        </h1>
-        <h2 class="italic text-xl">
-          Your daily fix of Herbivorous Hooved Homies
-        </h2>
-        <div class="relative h-40 w-screen max-w-[640px] overflow-hidden" id="homies-container">
+      <h1 class="font-extrabold text-5xl">
+        The Daily Ungulate
+      </h1>
+      <h2 class="italic text-xl">
+        Your daily fix of Herbivorous Hooved Homies
+      </h2>
+      <div
+        class="relative h-40 w-screen max-w-[640px] overflow-hidden" id="homies-container"
+        x-data="{ icons: ['i-twemoji-hippopotamus','i-fluent-emoji-flat:horse','i-fluent-emoji-flat:rhinoceros','i-fluent-emoji-flat:deer','i-fluent-emoji-flat:cow','i-fluent-emoji-flat:pig','i-fluent-emoji-flat:zebra','i-fluent-emoji-flat:water-buffalo','i-twemoji:giraffe','i-fluent-emoji-flat:goat','i-fxemoji:sheep'] }"
+      >
+        <template x-for="iconClass in icons">
           <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-twemoji-hippopotamus text-9xl z-10"></span>
+            <span class="text-9xl z-10" :class="iconClass"></span>
           </span>
-          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-fluent-emoji-flat:horse text-9xl z-10"></span>
-          </span>
-          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-fluent-emoji-flat:rhinoceros text-9xl z-10"></span>
-          </span>
-          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-fluent-emoji-flat:deer text-9xl z-10"></span>
-          </span>
-          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-fluent-emoji-flat:cow text-9xl z-10"></span>
-          </span>
-          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-fluent-emoji-flat:pig text-9xl z-10"></span>
-          </span>
-          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-fluent-emoji-flat:zebra text-9xl z-10"></span>
-          </span>
-          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-fluent-emoji-flat:water-buffalo text-9xl z-10"></span>
-          </span>
-          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-twemoji:giraffe text-9xl z-10"></span>
-          </span>
-          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-fluent-emoji-flat:goat text-9xl z-10"></span>
-          </span>
-          <span class="w-40 h-40 flex items-end justify-center pb-2 rounded-t-full bg-white absolute right-[-10rem]" data-role="homie">
-            <span class="i-fxemoji:sheep text-9xl z-10"></span>
-          </span>
-        </div>
+        </template>
+      </div>
     </div>
   </body>
 </html>
